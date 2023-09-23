@@ -10,7 +10,7 @@
         <img (click)="takeCard()" class="top-card" style="right: 25px" src="assets/img/cards/card_cover.png">
 
         <!-- Stack of played cards -->
-        <img *ngFor="let c of game.playedCards" class="played-cards" src="/assets/img/cards/{{ c }}.png">#
+        <img *ngFor="let c of game.playedCards" class="played-cards" src="assets/img/cards/{{ c }}.png">#
 
         <!--Current card (animation) -->
         <img (click)="takeCard()" *ngIf="pickCardAnimation" class="pick-card" style="right: 25px"
