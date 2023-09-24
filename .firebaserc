@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "ringoffire-b6202": {
+      "hosting": {
+        "ringoffire": [
+          "ringoffire-b6202"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "ringoffire-b6202"
+  }
+}
