@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
+import { FirebaseServicesComponent } from '../firebase-services/firebase-services.component';
+
+
 
 @Component({
   selector: 'app-game',
@@ -15,21 +18,18 @@ export class GameComponent implements OnInit {
 
   constructor(public dialog: MatDialog) { }
 
+
   ngOnInit() {
     this.newGame();
-
   }
 
   newGame() {
     this.game = new Game();
-    console.log(this.game);
-
   }
 
   takeCard() {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop()!;
-      console.log(this.currentCard);
       this.pickCardAnimation = true;
 
       this.game.currentPlayer++;
