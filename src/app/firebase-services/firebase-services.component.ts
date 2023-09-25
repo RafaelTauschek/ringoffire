@@ -1,5 +1,5 @@
 import { Component, Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,24 +10,39 @@ import { Observable } from 'rxjs';
 export class FirebaseServicesComponent {
 
   firestore: Firestore = inject(Firestore);
-  items$;
-  items;
+  unsubList;
+  unsubSingle;
 
   constructor() {
-    this.items$ = collectionData(this.getGameRef());
-    this.items = this.items$.subscribe((list) => {
+
+    this.unsubList = onSnapshot(this.getGameRef(), (list) => {
       list.forEach((element) => {
-        console.log(element);
-      })
+        console.log(element.data());
+      });
     });
-    this.items.unsubscribe();
+    this.unsubSingle = onSnapshot(this.getSingleGameRef('game', '681719ASFA51'), (element) => {
+    });
+  }
+
+
+  async addGame(item: {}) {
+    await addDoc(this.getGameRef(), item).catch(
+      (err) => { console.error(err) }
+    ).then(
+      (docRef) => { console.log('Document written with ID: ', docRef?.id); }
+    )
+  }
+
+  ngonDestroy() {
+    this.unsubList();
+    this.unsubSingle();
   }
 
   getGameRef() {
     return collection(this.firestore, 'games');
   }
 
-  getSingleGameRef(colId:string, docId:string) {
+  getSingleGameRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId), docId);
   }
 

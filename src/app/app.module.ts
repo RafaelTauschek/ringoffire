@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StartScreenComponent } from './start-screen/start-screen.component';
@@ -29,7 +28,6 @@ import { FirebaseServicesComponent } from './firebase-services/firebase-services
     PlayerComponent,
     DialogAddPlayerComponent,
     GameInfoComponent,
-    FirebaseServicesComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +43,9 @@ import { FirebaseServicesComponent } from './firebase-services/firebase-services
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())
   ],
-  providers: [],
+  providers: [
+    FirebaseServicesComponent,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

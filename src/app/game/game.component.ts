@@ -3,6 +3,7 @@ import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { FirebaseServicesComponent } from '../firebase-services/firebase-services.component';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -16,16 +17,24 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   game!: Game;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, private firebase: FirebaseServicesComponent, public dialog: MatDialog) { }
 
 
   ngOnInit() {
     this.newGame();
+    this.route.params.subscribe((params) => {
+      console.log(params['id']);
+    })
   }
+
+
 
   newGame() {
     this.game = new Game();
+    //this.firebase.addGame(this.game.toJson());
   }
+
+
 
   takeCard() {
     if (!this.pickCardAnimation) {
