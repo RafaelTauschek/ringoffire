@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Game } from 'src/models/game';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
-import { FirebaseServicesComponent } from '../firebase-services/firebase-services.component';
 import { ActivatedRoute } from '@angular/router';
+import { FirebaseService } from '../firebase.service';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
 
 
 
@@ -16,16 +17,21 @@ export class GameComponent implements OnInit {
   pickCardAnimation: boolean = false;
   currentCard: string = '';
   game!: Game;
+  unsubSingle:any;
+  gameId: any;
 
-  constructor(private route: ActivatedRoute, private firebase: FirebaseServicesComponent, public dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute, private firebase: FirebaseService, public dialog: MatDialog) { }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.newGame();
     this.route.params.subscribe((params) => {
-      console.log(params['id']);
-    })
+      this.unsubSingle = onSnapshot(this.firebase.getSingleGameRef('game', params['id']), (game:any) => {
+
+      });
+    });
   }
+
 
 
   newGame() {

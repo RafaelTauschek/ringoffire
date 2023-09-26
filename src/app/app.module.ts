@@ -18,7 +18,6 @@ import { MatCardModule } from '@angular/material/card';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { FirebaseServicesComponent } from './firebase-services/firebase-services.component';
 
 @NgModule({
   declarations: [
@@ -43,9 +42,7 @@ import { FirebaseServicesComponent } from './firebase-services/firebase-services
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore())
   ],
-  providers: [
-    FirebaseServicesComponent,
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { 

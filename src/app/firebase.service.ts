@@ -1,27 +1,17 @@
-import { Component, Injectable, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
-@Component({
-  selector: 'app-firebase-services',
-  templateUrl: './firebase-services.component.html',
-  styleUrls: ['./firebase-services.component.scss']
+@Injectable({
+  providedIn: 'root'
 })
-export class FirebaseServicesComponent {
+export class FirebaseService {
 
   firestore: Firestore = inject(Firestore);
-  unsubList;
-  unsubSingle;
+  unsubList: any;
+  unsubSingle: any;
 
   constructor() {
-
-    this.unsubList = onSnapshot(this.getGameRef(), (list) => {
-      list.forEach((element) => {
-        console.log(element.data());
-      });
-    });
-    this.unsubSingle = onSnapshot(this.getSingleGameRef('game', '681719ASFA51'), (element) => {
-    });
   }
 
 
@@ -45,5 +35,4 @@ export class FirebaseServicesComponent {
   getSingleGameRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId), docId);
   }
-
 }
