@@ -16,11 +16,15 @@ export class FirebaseService {
 
 
   async addGame(item: {}) {
-    await addDoc(this.getGameRef(), item).catch(
-      (err) => { console.error(err) }
-    ).then(
-      (docRef) => { console.log('Document written with ID: ', docRef?.id); }
-    )
+    await addDoc(this.getGameRef(), item)
+      .then((docRef) => {
+        this.unsubSingle = onSnapshot(this.getSingleGameRef('games', docRef.id), (gameInfo: any) => {
+          console.log(gameInfo.data()); 
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   ngonDestroy() {

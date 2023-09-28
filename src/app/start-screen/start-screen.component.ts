@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { FirebaseService } from '../firebase.service';
+import { Game } from 'src/models/game';
 
 @Component({
   selector: 'app-start-screen',
@@ -8,12 +10,17 @@ import { Route, Router } from '@angular/router';
 })
 export class StartScreenComponent {
 
-  constructor(private router: Router) { }
+  constructor(private firebase: FirebaseService, private router: Router) { }
 
 
 
   newGame() {
-    // Start game
-    this.router.navigateByUrl('/game/');
+    let game = new Game();
+    this.firebase.addGame(game.toJson()).then((gameInfo: any) => {
+      console.log(gameInfo);
+      this.router.navigateByUrl('/game/');
+    }).catch((err) => {
+      console.error('Error adding game', err)
+    });
   }
 }

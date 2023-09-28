@@ -25,9 +25,14 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.newGame();
-    this.route.params.subscribe((params) => {
-      this.unsubSingle = onSnapshot(this.firebase.getSingleGameRef('game', params['id']), (game:any) => {
-
+    this.route.params.subscribe((param) => {
+      console.log('params', param['id']);
+      this.unsubSingle = onSnapshot(this.firebase.getSingleGameRef('games', param['id']), (game:any) => {
+        	console.log('game update', game);
+          this.game.currentPlayer = game.currentPlayer;
+          this.game.playedCards = game.playedCards;
+          this.game.players = game.players;
+          this.game.stack = game.stack;
       });
     });
   }
@@ -36,7 +41,6 @@ export class GameComponent implements OnInit {
 
   newGame() {
     this.game = new Game();
-    //this.firebase.addGame(this.game.toJson());
   }
 
 
