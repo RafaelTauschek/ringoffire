@@ -22,10 +22,14 @@ export class FirebaseService {
     ).then(
       (docRef) => {
         console.log('Document written with ID: ', docRef?.id);
-        this.unsubSingle = this.snapshotSingleGame(docRef?.id);
-        this.gameId = docRef?.id;
+        this.subscribeGame(docRef?.id);
       }
     )
+  }
+
+  subscribeGame(id:any) {
+    this.unsubSingle = this.snapshotSingleGame(id);
+    this.gameId = id;
   }
 
   snapshotSingleGame(id: any) {

@@ -26,8 +26,10 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((param) => {
       console.log('params', param['id']);
-      // Update?
-      
+      if (this.gameId == undefined) {
+        this.gameId = param['id'];
+        this.firebase.subscribeGame(this.gameId);
+      }
     });
   }
 
