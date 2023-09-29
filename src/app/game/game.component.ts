@@ -26,6 +26,8 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((param) => {
       console.log('params', param['id']);
+      // Update?
+      
     });
   }
 
