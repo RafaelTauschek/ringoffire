@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, doc, collectionData, onSnapshot, addDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { Game } from 'src/models/game';
 
 @Injectable({
   providedIn: 'root'
@@ -19,15 +20,16 @@ export class FirebaseService {
     await addDoc(this.getGameRef(), item).catch(
       (err) => { console.error(err) }
     ).then(
-      (docRef) => { console.log('Document written with ID: ', docRef?.id);
-      this.snapshotSingleGame(docRef?.id);
-      this.gameId = docRef?.id;
-    }
+      (docRef) => {
+        console.log('Document written with ID: ', docRef?.id);
+        this.unsubSingle = this.snapshotSingleGame(docRef?.id);
+        this.gameId = docRef?.id;
+      }
     )
   }
 
-  snapshotSingleGame(id:any) {
-    onSnapshot(this.getSingleGameRef('games', id), (game:any) => {
+  snapshotSingleGame(id: any) {
+    onSnapshot(this.getSingleGameRef('games', id), (game: any) => {
       return game.data();
     });
   }
