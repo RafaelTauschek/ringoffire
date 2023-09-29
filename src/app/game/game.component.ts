@@ -26,7 +26,6 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((param) => {
       console.log('params', param['id']);
-
     });
   }
 
@@ -39,14 +38,16 @@ export class GameComponent implements OnInit {
     if (!this.pickCardAnimation) {
       this.currentCard = this.game.stack.pop()!;
       this.pickCardAnimation = true;
+      this.firebase.updateGame(this.game);
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
       setTimeout(() => {
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
+        this.firebase.updateGame(this.game);
       }, 1000);
     }
-  }
+  } 
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
@@ -54,6 +55,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.firebase.updateGame(this.game);
       }
     });
   }

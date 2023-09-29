@@ -35,6 +35,16 @@ export class FirebaseService {
   }
 
 
+  async updateGame(game: Game) {
+    if (game) {
+        let docRef = this.getSingleGameRef('games', this.gameId);
+        await updateDoc(docRef, game.toJson()).catch(
+          (err) => {console.log(err)}
+        )
+    }
+  }
+
+
   ngonDestroy() {
     this.unsubSingle();
   }
