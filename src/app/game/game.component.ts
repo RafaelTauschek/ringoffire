@@ -27,22 +27,18 @@ export class GameComponent implements OnInit {
     this.newGame();
     this.route.params.subscribe((param) => {
       console.log('params', param['id']);
-      this.unsubSingle = onSnapshot(this.firebase.getSingleGameRef('games', param['id']), (game:any) => {
-        	console.log('game update', game);
-          this.game.currentPlayer = game.currentPlayer;
-          this.game.playedCards = game.playedCards;
-          this.game.players = game.players;
-          this.game.stack = game.stack;
-      });
+      this.firebase.getSingleGameRef('games', param['id']).subscribe((game:any) => {
+        this.game.currentPlayer = game.currentPlayer;
+        this.game.playedCards = game.playedCards;
+        this.game.players = game.players;
+        this.game.stack = game.stack;
+      })
     });
   }
-
-
 
   newGame() {
     this.game = new Game();
   }
-
 
 
   takeCard() {

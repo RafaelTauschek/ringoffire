@@ -16,9 +16,8 @@ export class StartScreenComponent {
 
   newGame() {
     let game = new Game();
-    this.firebase.addGame(game.toJson()).then((gameInfo: any) => {
-      console.log(gameInfo);
-      this.router.navigateByUrl('/game/');
+    this.firebase.addGame(game.toJson()).then(() => {
+      this.router.navigateByUrl('/game/' + this.firebase.gameId);
     }).catch((err) => {
       console.error('Error adding game', err)
     });

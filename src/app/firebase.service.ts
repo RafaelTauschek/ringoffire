@@ -8,27 +8,32 @@ import { Observable } from 'rxjs';
 export class FirebaseService {
 
   firestore: Firestore = inject(Firestore);
-  unsubList: any;
   unsubSingle: any;
+  gameId: any;
 
   constructor() {
   }
 
 
   async addGame(item: {}) {
-    await addDoc(this.getGameRef(), item)
-      .then((docRef) => {
-        this.unsubSingle = onSnapshot(this.getSingleGameRef('games', docRef.id), (gameInfo: any) => {
-          console.log(gameInfo.data()); 
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    await addDoc(this.getGameRef(), item).catch(
+      (err) => { console.error(err) }
+    ).then(
+      (docRef) => { console.log('Document written with ID: ', docRef?.id);
+      this.snapshotSingleGame(docRef?.id);
+      this.gameId = docRef?.id;
+    }
+    )
   }
 
+  snapshotSingleGame(id:any) {
+    onSnapshot(this.getSingleGameRef('games', id), (game:any) => {
+      return game.data();
+    });
+  }
+
+
   ngonDestroy() {
-    this.unsubList();
     this.unsubSingle();
   }
 
