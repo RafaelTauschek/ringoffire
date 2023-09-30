@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-player',
@@ -6,6 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./edit-player.component.scss']
 })
 export class EditPlayerComponent {
+
+  constructor(public dialogRef: MatDialogRef<EditPlayerComponent>) { }
+  
 
   allProfilePictures = [
     'bear.png',
@@ -18,4 +22,8 @@ export class EditPlayerComponent {
     'penguin.png',
     'sheep.png',
   ];
+
+  onNoClick() {
+    this.dialogRef.close();
+  }
 }
