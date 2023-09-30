@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, collection, doc, collectionData, onSnapshot, addDoc, updateDoc } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { Game } from 'src/models/game';
 
 @Injectable({
@@ -9,8 +9,15 @@ import { Game } from 'src/models/game';
 export class FirebaseService {
 
   firestore: Firestore = inject(Firestore);
+  subject = new Subject<any>();
   unsubSingle: any;
   gameId: any;
+  game = {};
+
+  serviceMethod(game:any) : void {
+    this.subject.next(game);
+  }
+  
 
   constructor() {
   }
@@ -27,24 +34,28 @@ export class FirebaseService {
     )
   }
 
-  subscribeGame(id:any) {
+
+  async subscribeGame(id: any) {
     this.unsubSingle = this.snapshotSingleGame(id);
     this.gameId = id;
   }
 
+
   snapshotSingleGame(id: any) {
     onSnapshot(this.getSingleGameRef('games', id), (game: any) => {
-      return game.data();
+      this.game = game.data();
+      this.serviceMethod(this.game);
     });
   }
 
 
   async updateGame(game: Game) {
     if (game) {
-        let docRef = this.getSingleGameRef('games', this.gameId);
-        await updateDoc(docRef, game.toJson()).catch(
-          (err) => {console.log(err)}
-        )
+      let docRef = this.getSingleGameRef('games', this.gameId);
+      console.log('Game is:', game);
+      await updateDoc(docRef, game.toJson()).catch(
+        (err) => { console.log(err) }
+      )
     }
   }
 
@@ -53,9 +64,11 @@ export class FirebaseService {
     this.unsubSingle();
   }
 
+
   getGameRef() {
     return collection(this.firestore, 'games');
   }
+
 
   getSingleGameRef(colId: string, docId: string) {
     return doc(collection(this.firestore, colId), docId);

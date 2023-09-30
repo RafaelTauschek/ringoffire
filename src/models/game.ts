@@ -16,6 +16,7 @@ export class Game {
         shuffle(this.stack);
     }
 
+
     public toJson() {
         return {
             players: this.players,
@@ -27,6 +28,7 @@ export class Game {
         }
     }
 }
+
 
 function shuffle(array: string[]) {
     let currentIndex = array.length, randomIndex;
