@@ -3,6 +3,9 @@
     height: 100vh;
     max-width: 100%;
     background-image: url('/assets/img/wood-table.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,5 +85,14 @@
 
     app-player-mobile {
         margin-left: 8px;
+    }
+}
+
+app-player, 
+app-player-mobile {
+    cursor: pointer;
+
+    &:hover {
+        filter: brightness(1.15);
     }
 }

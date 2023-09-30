@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { ActivatedRoute } from '@angular/router';
 import { FirebaseService } from '../firebase.service';
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 
 
@@ -28,15 +29,16 @@ export class GameComponent implements OnInit {
         this.gameId = param['id'];
         this.firebase.subscribeGame(this.gameId);
       }
-      });
-      this.firebase.subject.subscribe((game) => {
-        console.log('subject game:', game);
-        this.game.stack = game.stack;
-        this.game.players = game.players;
-        this.game.playedCards = game.playedCards;
-        this.game.currentPlayer = game.currentPlayer
-        this.game.pickCardAnimation = game.pickCardAnimation;
-        this.game.currentCard = game.currentCard;
+    });
+    this.firebase.subject.subscribe((game) => {
+      console.log('subject game:', game);
+      this.game.stack = game.stack;
+      this.game.players = game.players;
+      this.game.player_images = game.player_images;
+      this.game.playedCards = game.playedCards;
+      this.game.currentPlayer = game.currentPlayer
+      this.game.pickCardAnimation = game.pickCardAnimation;
+      this.game.currentCard = game.currentCard;
     });
   }
 
@@ -61,12 +63,20 @@ export class GameComponent implements OnInit {
     }
   }
 
+  editPlayer(playerId: number) {
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+    dialogRef.afterClosed().subscribe((change: string) => {
+      this.game.player_images[playerId] = change;
+      this.firebase.updateGame(this.game);
+    });
+  }
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent);
     dialogRef.afterClosed().subscribe((name: string) => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.game.player_images.push('sheep.png')
         this.firebase.updateGame(this.game);
       }
     });
